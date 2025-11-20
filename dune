@@ -5,3 +5,7 @@
 (executable
   (name token)
 )
+(executable
+  (name ml_lex)
+  (libraries base stdio)
+)
