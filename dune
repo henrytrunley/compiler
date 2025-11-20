@@ -2,3 +2,6 @@
   (name straight_line_grammar)
   (libraries base stdio)
 )
+(executable
+  (name token)
+)
