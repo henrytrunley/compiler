@@ -13,3 +13,7 @@
   (name dfa)
   (libraries base stdio)
 )
+(executable
+  (name nfa)
+  (libraries base stdio)
+)
