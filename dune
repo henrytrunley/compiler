@@ -7,5 +7,9 @@
 )
 (executable
   (name ml_lex)
+  (libraries base stdio str)
+)
+(executable
+  (name dfa)
   (libraries base stdio)
 )
