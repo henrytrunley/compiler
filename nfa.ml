@@ -4,8 +4,8 @@ module IntSet = Set.Make(Base.Int)
 
 type nfa = {
     dfa_edge : IntSet.t -> string -> IntSet.t;
-    accepts : IntSet.t -> bool;
-    start : IntSet.t;
+    initial : IntSet.t;
+    final : IntSet.t;
 }
 
 let expand edge states c =
@@ -22,34 +22,29 @@ let dfa_edge edge states c =
     closure edge new_states
 
 let accept f states =
-    IntSet.exists f states
+    not (IntSet.disjoint f states)
 
 let construct d f q0 = {
     dfa_edge = dfa_edge d;
-    accepts = accept f;
-    start = closure d (IntSet.of_list q0)
+    final = IntSet.of_list f;
+    initial = closure d (IntSet.of_list q0)
 }
 
+let run nfa input =
+    let state = ref nfa.initial in
+    String.iter (fun c ->
+        state := nfa.dfa_edge !state (String.make 1 c)
+    ) input;
+    accept nfa.final !state
+
+(* User Inputs *)
 let edge s c = match s with
     | 1 -> (match c with | "0" -> [1] | "1" -> [2] | _ -> [] )
     | 2 -> (match c with | "0" -> [3] | "1" -> [2] | _ -> [] )
     | 3 -> (match c with | "0" -> [2] | "1" -> [2] | _ -> [] )
     | _ -> (match c with | _ -> [])
-
-let f = function
-    | 1 -> false
-    | 2 -> true
-    | 3 -> false
-    | _ -> false
-
+let f = [2]
 let q0 = [1]
-
-let run nfa input =
-    let state = ref nfa.start in
-    String.iter (fun c ->
-        state := nfa.dfa_edge !state (String.make 1 c)
-    ) input;
-    nfa.accepts !state
 
 let () =
     let nfa = construct edge f q0 in
