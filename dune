@@ -17,3 +17,7 @@
   (name nfa)
   (libraries base stdio)
 )
+(executable
+  (name re_to_nfa)
+  (libraries base stdio)
+)
