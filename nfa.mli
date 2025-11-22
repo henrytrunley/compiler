@@ -1,3 +1,8 @@
-type nfa
+type node
+type nfa = {
+    edge : node -> string -> node list;
+    initial : node list;
+    final : node list;
+}
 
-val construct : (int -> string -> int list) -> int list -> int list -> nfa
+val construct : (node -> string -> node list) -> node list -> node list -> nfa
