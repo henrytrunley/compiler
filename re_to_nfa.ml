@@ -34,7 +34,7 @@ let print_token token = match token with
     | EOF -> Printf.printf "EOF\n"
 
 type tree =
-    | Base of char
+    | Base of string
     | Group of tree
     | Quant of tree
     | Union of tree * tree
@@ -68,7 +68,7 @@ and parse_value l =
     match l with
         | [] -> failwith "Unexpected missing token"
         | hd :: tl -> (match hd with
-            | Cha c -> Base c, tl
+            | Cha c -> Base (String.make 1 c), tl
             | LParen -> let tree, tl = parse_union tl in (match tl with | RParen :: tl -> Group tree, tl | _ -> failwith "Unmatched parentheses in expression")
             | Bar -> failwith "Unexpected Bar"
             | RParen -> failwith "Unexpected LParen"
@@ -76,10 +76,13 @@ and parse_value l =
             | EOF -> failwith "Unexpected EOF"
         )
 
-let to_tree tokens = parse_union tokens
+let to_tree tokens =
+    let tree, leftovers = parse_union tokens in
+    assert ((List.length leftovers) = 1); (* EOF remains unprocessed *)
+    tree
 
 let rec print_tree tree = match tree with
-    | Base c -> Printf.printf "%c\n" c
+    | Base c -> Printf.printf "%s\n" c
     | Quant t -> Printf.printf "--Quant--\n"; print_tree t
     | Group t -> Printf.printf "--Group--\n"; print_tree t
     | Concat (l, r) -> Printf.printf "--Concat--\n"; print_tree l; print_tree r
@@ -90,5 +93,5 @@ let () =
     let re = "(ab|a)*" in
     let tokens = to_tokens re in
     let () = List.iter print_token tokens in
-    let tree, _ = to_tree tokens in
+    let tree = to_tree tokens in
     print_tree tree
