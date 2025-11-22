@@ -53,7 +53,7 @@ and parse_concat l =
     match tl with
         | [] -> (left_tree, tl)
         | hd :: tl -> (match hd with
-            | Cha _ | LParen | Star -> print_token hd; let right_tree, tl = parse_quant (hd :: tl) in Concat (left_tree, right_tree), tl
+            | Cha _ | LParen | Star -> let right_tree, tl = parse_quant (hd :: tl) in Concat (left_tree, right_tree), tl
             | Bar | RParen | EOF -> left_tree, hd :: tl
         )
 and parse_quant l =
@@ -89,5 +89,6 @@ let () =
     let _ = "ababababab" in
     let re = "(ab|a)*" in
     let tokens = to_tokens re in
+    let () = List.iter print_token tokens in
     let tree, _ = to_tree tokens in
     print_tree tree
