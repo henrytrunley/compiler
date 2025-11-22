@@ -39,7 +39,6 @@ type tree =
     | Quant of tree
     | Union of tree * tree
     | Concat of tree * tree
-    | Dummy
 
 let rec parse_union l =
     let left_tree, tl = parse_concat l in
@@ -66,7 +65,6 @@ and parse_quant l =
             | Bar | LParen | Cha _ | RParen | EOF -> tree, hd :: tl
         )
 and parse_value l =
-    Printf.printf "calling parse_value with list of length %i\n" (List.length l);
     match l with
         | [] -> failwith "Unexpected missing token"
         | hd :: tl -> (match hd with
@@ -84,7 +82,6 @@ let rec print_tree tree = match tree with
     | Base c -> Printf.printf "%c\n" c
     | Quant t -> Printf.printf "--Quant--\n"; print_tree t
     | Group t -> Printf.printf "--Group--\n"; print_tree t
-    | Dummy -> Printf.printf "DUMMY\n"
     | Concat (l, r) -> Printf.printf "--Concat--\n"; print_tree l; print_tree r
     | Union (l, r) -> Printf.printf "--Union--\n"; print_tree l; print_tree r
 
