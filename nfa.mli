@@ -1,8 +1,7 @@
-type node
 type nfa = {
-    edge : node -> string -> node list;
-    initial : node list;
-    final : node list;
+    edges : (int * string, int list) Hashtbl.t;
+    initial : int;
+    final : int list;
 }
 
-val construct : (node -> string -> node list) -> node list -> node list -> nfa
+val construct : ((int * string) * int list) list -> int list -> int -> nfa
