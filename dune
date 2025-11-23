@@ -16,7 +16,7 @@
 (executable
   (name nfa)
   (libraries base stdio)
-  (preprocess (pps ppx_jane))
+  ; (preprocess (pps ppx_jane))
 )
 (executable
   (name re_to_nfa)
@@ -25,4 +25,5 @@
 (executable
   (name tree_to_nfa)
   (libraries base stdio)
+  (preprocess (pps ppx_jane))
 )
