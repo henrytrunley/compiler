@@ -22,15 +22,15 @@ module Node_symbol = struct
 end
 
 type t = {
-    edges : (int * string, int list) Hashtbl.t;
+    edges : (int * string, (int, (Int.comparator_witness)) Set.t) Hashtbl.t;
     initial : int;
-    final : int list;
+    final : (int, (Int.comparator_witness)) Set.t;
 }
 
 let next_states edges state symbol =
     match Hashtbl.find edges (state, symbol) with
         | None -> Set.empty (module Int)
-        | Some new_states -> Set.of_list (module Int) new_states
+        | Some new_states -> new_states
 
 let expand edges states symbol =
     let empty_set = Set.empty (module Int) in
@@ -54,18 +54,17 @@ let list_to_hashtbl alist =
     | `Ok tbl -> tbl
     | `Duplicate_key _ -> failwith "Couln't generate hashtable with duplicate key: %i"
 
-let nfa_from_list d f q0 = {
-    edges = list_to_hashtbl d;
-    final = f;
-    initial = q0
-}
+let nfa_from_lists d f q0 = 
+    let d = List.map d ~f:(fun (node_sym, states) -> (node_sym, Set.of_list (module Int) states)) in
+    let f = Set.of_list (module Int) f in
+    { edges = list_to_hashtbl d; final = f; initial = q0 }
 
 let run nfa input =
     let state = ref (closure nfa.edges (Set.of_list (module Int) [nfa.initial])) in
     String.iter ~f:(fun c ->
         state := dfa_edge nfa.edges !state (String.make 1 c)
     ) input;
-    accept (Set.of_list (module Int) nfa.final) !state
+    accept nfa.final !state
 
 (* User Inputs *)
 let edges = [
@@ -81,6 +80,6 @@ let f = [2]
 let q0 = 1
 
 let () =
-    let nfa = nfa_from_list edges f q0 in
+    let nfa = nfa_from_lists edges f q0 in
     let res = run nfa "0100000000000000000000000001010101010110100" in
     printf "%b\n" res
