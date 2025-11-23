@@ -7,3 +7,5 @@ type t = {
 }
 
 val nfa_from_lists : ((int * string) * int list) list -> int list -> int -> t
+
+val run : t -> string -> bool

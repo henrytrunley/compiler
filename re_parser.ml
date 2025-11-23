@@ -88,10 +88,3 @@ let rec print_tree tree = match tree with
     | Concat (l, r) -> Printf.printf "--Concat--\n"; print_tree l; print_tree r
     | Union (l, r) -> Printf.printf "--Union--\n"; print_tree l; print_tree r
 
-let () =
-    let _ = "ababababab" in
-    let re = "(ab|a)*" in
-    let tokens = to_tokens re in
-    let () = List.iter print_token tokens in
-    let tree = to_tree tokens in
-    print_tree tree

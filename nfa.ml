@@ -1,5 +1,5 @@
 open Base
-open Stdio
+(* open Stdio *)
 
 (* module Node_symbol = struct *)
 (*     module T = struct *)
@@ -67,19 +67,18 @@ let run nfa input =
     accept nfa.final !state
 
 (* User Inputs *)
-let edges = [
-    ((1, "0"), [1]);
-    ((1, ""), [2]);
-    ((1, "1"), [2]);
-    ((2, "0"), [3]);
-    ((2, "1"), [2]);
-    ((3, "0"), [2]);
-    ((3, "1"), [2]);
-]
-let f = [2]
-let q0 = 1
-
-let () =
-    let nfa = nfa_from_lists edges f q0 in
-    let res = run nfa "0100000000000000000000000001010101010110100" in
-    printf "%b\n" res
+(* let edges = [ *)
+(*     ((1, "0"), [1]); *)
+(*     ((1, ""), [2]); *)
+(*     ((1, "1"), [2]); *)
+(*     ((2, "0"), [3]); *)
+(*     ((2, "1"), [2]); *)
+(*     ((3, "0"), [2]); *)
+(*     ((3, "1"), [2]); *)
+(* ] *)
+(* let f = [2] *)
+(* let q0 = 1 *)
+(* let () = *)
+(*     let nfa = nfa_from_lists edges f q0 in *)
+(*     let res = run nfa "0100000000000000000000000001010101010110100" in *)
+(*     printf "%b\n" res *)

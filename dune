@@ -19,11 +19,16 @@
   ; (preprocess (pps ppx_jane))
 )
 (executable
-  (name re_to_nfa)
+  (name re_parser)
   (libraries base stdio)
 )
 (executable
   (name tree_to_nfa)
+  (libraries base stdio)
+  ; (preprocess (pps ppx_jane))
+)
+(executable
+  (name re)
   (libraries base stdio)
   (preprocess (pps ppx_jane))
 )

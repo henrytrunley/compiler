@@ -8,6 +8,8 @@ type token =
 
 val to_tokens : string -> token list
 
+val print_token : token -> unit
+
 type tree =
     | Base of string
     | Group of tree

@@ -1,6 +1,6 @@
 open Base 
 open Nfa
-open Re_to_nfa
+open Re_parser
 
 let make_set node = Set.of_list (module Int) [node]
 

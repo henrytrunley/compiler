@@ -1,1 +1,1 @@
-val to_nfa : Re_to_nfa.tree -> Nfa.t
+val to_nfa : Re_parser.tree -> Nfa.t
