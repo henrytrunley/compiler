@@ -12,7 +12,10 @@ let combine_edges edges1 edges2 = Base.Hashtbl.merge edges1 edges2 ~f:(
     )
 
 let add_edge edges from to_ on =
-    let res = Base.Hashtbl.add edges ~key:(from, on) ~data:(make_set to_) in
+    let old_to = Base.Hashtbl.find_or_add edges (from, on) ~default:(fun () -> Set.empty (module Int)) in
+    let new_to = Set.add old_to to_ in
+    Base.Hashtbl.remove edges (from, on);
+    let res = Base.Hashtbl.add edges ~key:(from, on) ~data:new_to in
     match res with
         | `Ok -> ()
         | `Duplicate -> failwith (Printf.sprintf "Unexpectedly added duplicate edge from %i to %i on %s" from to_ on)
