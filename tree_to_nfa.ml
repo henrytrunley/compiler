@@ -26,9 +26,13 @@ let cha_nfa c last_id =
     let edges = [(q0, c), f] in
     nfa_from_lists edges f q0, last_id + 2
 
-let quant_nfa nfa =
-    Set.iter nfa.final ~f:(fun node -> add_edge nfa.edges node nfa.initial "");
-    nfa
+let quant_nfa nfa last_id =
+    let new_initial = last_id + 1 in
+    let new_final = last_id + 2 in
+    add_edge nfa.edges new_initial nfa.initial "";
+    add_edge nfa.edges new_initial new_final "";
+    Set.iter nfa.final ~f:(fun old_final -> add_edge nfa.edges old_final nfa.initial ""; add_edge nfa.edges old_final new_final "");
+    { edges = nfa.edges ; initial = new_initial; final = make_set new_final }, new_final
 
 let concat_nfa nfa1 nfa2 =
     let new_edges = combine_edges nfa1.edges nfa2.edges in
@@ -49,7 +53,7 @@ let union_nfa nfa1 nfa2 last_id =
     
 
 let rec to_nfa_ tree last_id = match tree with
-    | Quant t -> let nfa, last_id = to_nfa_ t last_id in quant_nfa nfa, last_id
+    | Quant t -> let nfa, last_id = to_nfa_ t last_id in quant_nfa nfa last_id
     | Group t -> to_nfa_ t last_id
     | Concat (l, r) -> let l_nfa, last_id = to_nfa_ l last_id in let r_nfa, last_id = to_nfa_ r last_id in concat_nfa l_nfa r_nfa, last_id
     | Union (l, r) -> let l_nfa, last_id = to_nfa_ l last_id in let r_nfa, last_id = to_nfa_ r last_id in union_nfa l_nfa r_nfa last_id
