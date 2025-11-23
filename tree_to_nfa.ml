@@ -43,9 +43,7 @@ let union_nfa nfa1 nfa2 last_id =
     let new_initial = last_id + 1 in
     let new_final = last_id + 2 in
     let new_edges = combine_edges nfa1.edges nfa2.edges in
-    Stdio.printf "Adding edge from new_initial=%i to %i\n" new_initial nfa1.initial;
     add_edge new_edges new_initial nfa1.initial "";
-    Stdio.printf "Adding edge from new_initial=%i to %i\n" new_initial nfa2.initial;
     add_edge new_edges new_initial nfa2.initial "";
     let all_final = Set.union nfa1.final nfa2.final in
     Set.iter all_final ~f:(fun final -> add_edge new_edges final new_final "");
