@@ -15,7 +15,7 @@ let add_edge edges from to_ on =
     let res = Base.Hashtbl.add edges ~key:(from, on) ~data:(make_set to_) in
     match res with
         | `Ok -> ()
-        | `Duplicate -> failwith (Printf.sprintf "Unexpectedly added duplicate edge from %i on %s" from on)
+        | `Duplicate -> failwith (Printf.sprintf "Unexpectedly added duplicate edge from %i to %i on %s" from to_ on)
 
 let cha_nfa c last_id =
     let q0 = last_id + 1 in
@@ -36,7 +36,9 @@ let union_nfa nfa1 nfa2 last_id =
     let new_initial = last_id + 1 in
     let new_final = last_id + 2 in
     let new_edges = combine_edges nfa1.edges nfa2.edges in
+    Stdio.printf "Adding edge from new_initial=%i to %i\n" new_initial nfa1.initial;
     add_edge new_edges new_initial nfa1.initial "";
+    Stdio.printf "Adding edge from new_initial=%i to %i\n" new_initial nfa2.initial;
     add_edge new_edges new_initial nfa2.initial "";
     let all_final = Set.union nfa1.final nfa2.final in
     Set.iter all_final ~f:(fun final -> add_edge new_edges final new_final "");
