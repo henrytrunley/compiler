@@ -1,34 +1,8 @@
 (executable
-  (name straight_line_grammar)
-  (libraries base stdio)
-)
-(executable
-  (name token)
-)
-(executable
   (name ml_lex)
   (libraries base stdio str)
 )
 (executable
   (name dfa)
   (libraries base stdio)
-)
-(executable
-  (name nfa)
-  (libraries base stdio)
-  ; (preprocess (pps ppx_jane))
-)
-(executable
-  (name re_parser)
-  (libraries base stdio)
-)
-(executable
-  (name tree_to_nfa)
-  (libraries base stdio)
-  ; (preprocess (pps ppx_jane))
-)
-(executable
-  (name re)
-  (libraries base stdio)
-  (preprocess (pps ppx_jane))
 )
