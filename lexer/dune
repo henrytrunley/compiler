@@ -1,6 +1,6 @@
 ; (library (name lexer))
 (executable
-  (name test)
+  (name test_re)
   (libraries base stdio re)
 )
 (executable
