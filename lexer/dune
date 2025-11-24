@@ -3,3 +3,7 @@
   (name test)
   (libraries base stdio re)
 )
+(executable
+  (name ml_lex)
+  (libraries base stdio str)
+)

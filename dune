@@ -1,8 +1,4 @@
 (executable
-  (name ml_lex)
-  (libraries base stdio str)
-)
-(executable
-  (name dfa)
+  (name straight_line_grammar)
   (libraries base stdio)
 )
