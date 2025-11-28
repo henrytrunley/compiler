@@ -8,5 +8,5 @@
 )
 (executable
   (name ml_lex)
-  (libraries base stdio str)
+  (libraries base stdio str re)
 )
